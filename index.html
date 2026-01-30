@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>极简效率工具箱 Pro Max</title>
+    <style>
+        /* 导入现代字体 */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-light: #60a5fa;
+            --bg: #f8fafc;
+            --bg-dark: #0f172a;
+            --card: rgba(255, 255, 255, 0.9);
+            --card-dark: rgba(15, 23, 42, 0.9);
+            --text: #1e293b;
+            --text-light: #64748b;
+            --text-dark: #f1f5f9;
+            --text-light-dark: #94a3b8;
+            --border: #e2e8f0;
+            --border-dark: #334155;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: var(--transition);
+        }
+        
+        /* 头部设计 */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            max-width: 800px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-light), var(--primary));
+            border-radius: 2px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-top: 20px;
+            font-weight: 400;
+        }
+        
+        /* 广告位 */
+        .ad-space {
+            width: 100%;
+            max-width: 1000px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: var(--shadow-glass);
+            transition: var(--transition);
+        }
+        
+        .ad-space:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        /* 主容器 */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 28px;
+            max-width: 1100px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        
+        /* 卡片设计 */
+        .card {
+            background: var(--card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: var(--shadow-glass);
+            padding: 30px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        /* 卡片标题 */
+        .card h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* 表单元素 */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e2e8f0;
+            outline: none;
+            margin: 12px 0 20px 0;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
+            transition: var(--transition);
+        }
+        
+        input[type="range"]::-webkit-slider-thumb:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+        
+        input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 16px;
+            margin: 8px 0;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.7);
+        }
+        
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            margin: 8px 0;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 120px;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.7);
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* 按钮设计 */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: inherit;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            flex: 1;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        button.secondary {
+            background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+            color: var(--text);
+        }
+        
+        button.secondary:hover {
+            box-shadow: 0 10px 20px rgba(148, 163, 184, 0.3);
+        }
+        
+        /* 结果框 */
+        .result-box {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            word-break: break-all;
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: var(--transition);
+        }
+        
+        .result-box:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+        }
+        
+        /* 倒计时特定样式 */
+        #timer-display {
+            font-size: 3.5rem;
+            text-align: center;
+            margin: 20px 0;
+            font-weight: 700;
+            color: var(--text);
+            font-variant-numeric: tabular-nums;
+            font-family: 'Courier New', Courier, monospace;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .timer-inputs {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .timer-input-group {
+            flex: 1;
+        }
+        
+        .timer-input-group label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        
+        /* 大转盘特定样式 */
+        .wheel-wrapper {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 24px auto;
+            overflow: hidden;
+            border-radius: 50%;
+            box-shadow: var(--shadow-glass);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        #wheelCanvas {
+            width: 100%;
+            height: 100%;
+            transition: transform 4s cubic-bezier(0.2, 0.8, 0.3, 1);
+        }
+        
+        .pointer {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 40px solid var(--error);
+            z-index: 10;
+            filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.3));
+            transition: var(--transition);
+        }
+        
+        .wheel-wrapper:hover .pointer {
+            transform: translateX(-50%) scale(1.05);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 16px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .card {
+                padding: 24px;
+            }
+            
+            #timer-display {
+                font-size: 2.8rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .wheel-wrapper {
+                width: 260px;
+                height: 260px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            #timer-display {
+                font-size: 2.2rem;
+            }
+            
+            .wheel-wrapper {
+                width: 220px;
+                height: 220px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>极简效率工具箱</h1>
+        <p class="subtitle">更准、更快、更顺手</p>
+    </div>
+
+    <!-- 广告位 -->
+    <div class="ad-space">
+        广告位：【狗头】【狗头】【狗头】
+    </div>
+
+    <div class="container">
+        <!-- 1. 强密码生成器 -->
+        <div class="card">
+            <h2>🔐 强密码生成器</h2>
+            <label>长度: <span id="len-val">16</span>位</label>
+            <input type="range" id="length" min="6" max="32" value="16" oninput="document.getElementById('len-val').innerText=this.value">
+            <div style="margin: 16px 0;">
+                <label><input type="checkbox" id="use-upper" checked> 大写 (A-Z)</label><br>
+                <label><input type="checkbox" id="use-num" checked> 数字 (0-9)</label><br>
+                <label><input type="checkbox" id="use-sym" checked> 符号 (!@#$)</label>
+            </div>
+            <button onclick="generatePassword()">生成密码</button>
+            <div class="result-box" id="password-result">点击生成</div>
+        </div>
+
+        <!-- 2. 精确倒计时 -->
+        <div class="card">
+            <h2>⏳ 精确倒计时</h2>
+            <div id="timer-display">25:00</div>
+            <div class="timer-inputs">
+                <div class="timer-input-group">
+                    <label>分钟</label>
+                    <input type="number" id="minutes-input" value="25" min="0" max="180" onchange="updateTimerFromInput()">
+                </div>
+                <div class="timer-input-group">
+                    <label>秒数</label>
+                    <input type="number" id="seconds-input" value="0" min="0" max="59" onchange="updateTimerFromInput()">
+                </div>
+            </div>
+            <div class="button-group">
+                <button id="btn-start" onclick="startTimer()">开始</button>
+                <button class="secondary" onclick="resetTimer()">重置</button>
+            </div>
+        </div>
+
+        <!-- 3. 幸运大转盘 -->
+        <div class="card">
+            <h2>🎡 幸运大转盘</h2>
+            <label>输入选项 (一行一个):</label>
+            <textarea id="wheel-choices" oninput="initWheel()">沙县小吃
+隆江猪脚饭
+肯德基
+麦当劳
+兰州拉面
+自己做饭</textarea>
+            
+            <div class="wheel-wrapper">
+                <div class="pointer"></div>
+                <canvas id="wheelCanvas" width="600" height="600"></canvas>
+            </div>
+            
+            <div class="result-box" id="wheel-result">准备起飞</div>
+            <button onclick="spinWheel()" id="spin-btn">开始转动！</button>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. 密码生成器 ---
+        function generatePassword() {
+            const length = document.getElementById('length').value;
+            const useUpper = document.getElementById('use-upper').checked;
+            const useNum = document.getElementById('use-num').checked;
+            const useSym = document.getElementById('use-sym').checked;
+            let chars = 'abcdefghijklmnopqrstuvwxyz';
+            if(useUpper) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            if(useNum) chars += '0123456789';
+            if(useSym) chars += '!@#$%^&*()_+~`|}{[]:;?><,./-=';
+            
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            // 添加生成动画效果
+            const resultBox = document.getElementById('password-result');
+            resultBox.style.transform = 'scale(0.95)';
+            resultBox.style.opacity = '0.7';
+            setTimeout(() => {
+                resultBox.innerText = password;
+                resultBox.style.transform = 'scale(1)';
+                resultBox.style.opacity = '1';
+            }, 150);
+        }
+
+        // --- 2. 倒计时 ---
+        let timer = null;
+        let totalSeconds = 25 * 60;
+        let isRunning = false;
+        
+        function updateDisplay(seconds) {
+            const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = `${m}:${s}`;
+            if(isRunning) document.title = `(${m}:${s}) 倒计时`;
+            else document.title = "极简效率工具箱";
+        }
+
+        function updateTimerFromInput() {
+            if (isRunning) return;
+            let mins = parseInt(document.getElementById('minutes-input').value) || 0;
+            let secs = parseInt(document.getElementById('seconds-input').value) || 0;
+            if (secs > 59) { secs = 59; document.getElementById('seconds-input').value = 59; }
+            if (mins < 0) mins = 0;
+            totalSeconds = mins * 60 + secs;
+            updateDisplay(totalSeconds);
+        }
+
+        function startTimer() {
+            if(isRunning) return;
+            if(totalSeconds <= 0) { 
+                alert("请先设置时间！"); 
+                return; 
+            }
+            
+            isRunning = true;
+            toggleInputs(true);
+            const startBtn = document.getElementById('btn-start');
+            startBtn.innerText = "计时中...";
+            startBtn.style.animation = 'pulse 2s infinite';
+            
+            timer = setInterval(() => {
+                if(totalSeconds > 0) {
+                    totalSeconds--;
+                    updateDisplay(totalSeconds);
+                } else {
+                    finishTimer();
+                }
+            }, 1000);
+        }
+
+        function finishTimer() {
+            clearInterval(timer);
+            isRunning = false;
+            document.title = "【时间到！】";
+            alert("⏰ 时间到！");
+            resetUI();
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            isRunning = false;
+            updateTimerFromInput();
+            resetUI();
+        }
+
+        function resetUI() {
+            toggleInputs(false);
+            const startBtn = document.getElementById('btn-start');
+            startBtn.innerText = "开始";
+            startBtn.style.animation = '';
+        }
+
+        function toggleInputs(disabled) {
+            document.getElementById('minutes-input').disabled = disabled;
+            document.getElementById('seconds-input').disabled = disabled;
+            document.getElementById('btn-start').disabled = disabled;
+        }
+
+        // --- 3. 大转盘 ---
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        let currentRotation = 0;
+        let isSpinning = false;
+        let options = [];
+        
+        // 优化的配色方案
+        const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE', '#D98880'];
+
+        function initWheel() {
+            if(isSpinning) return;
+            const raw = document.getElementById('wheel-choices').value;
+            options = raw.split('\n').map(s => s.trim()).filter(s => s !== "");
+            
+            if(options.length === 0) options = ['选项A', '选项B'];
+            drawWheel();
+        }
+
+        function drawWheel() {
+            const numOptions = options.length;
+            const arcSize = (2 * Math.PI) / numOptions;
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = canvas.width / 2 - 5;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            
+            // 绘制扇形
+            for (let i = 0; i < numOptions; i++) {
+                const angle = i * arcSize;
+                ctx.beginPath();
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.moveTo(0, 0);
+                ctx.arc(0, 0, radius, angle, angle + arcSize);
+                ctx.lineTo(0, 0);
+                ctx.fill();
+                ctx.stroke();
+                
+                // 绘制文字
+                ctx.save();
+                ctx.rotate(angle + arcSize / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#fff";
+                ctx.font = "bold 32px Arial";
+                if(options[i].length > 5) ctx.font = "bold 24px Arial";
+                ctx.fillText(options[i], radius - 30, 10);
+                ctx.restore();
+            }
+            ctx.restore();
+            
+            // 应用当前的旋转角度
+            canvas.style.transform = `rotate(${currentRotation}deg)`;
+        }
+
+        function spinWheel() {
+            if (isSpinning) return;
+            if (options.length < 2) { 
+                alert("至少输入2个选项！"); 
+                return; 
+            }
+
+            isSpinning = true;
+            const spinBtn = document.getElementById('spin-btn');
+            spinBtn.disabled = true;
+            spinBtn.innerText = "转动中...";
+            document.getElementById('wheel-result').innerText = "转动中...";
+
+            // 算法修复
+            const spinAngle = (360 * 5) + Math.floor(Math.random() * 360) + (360 * Math.random());
+            currentRotation -= spinAngle;
+            
+            // 设置动画时间
+            canvas.style.transition = 'transform 4s cubic-bezier(0.2, 0.8, 0.3, 1)';
+            canvas.style.transform = `rotate(${currentRotation}deg)`;
+
+            setTimeout(() => {
+                isSpinning = false;
+                spinBtn.disabled = false;
+                spinBtn.innerText = "开始转动！";
+                
+                // 计算结果
+                const actualRotation = currentRotation % 360;
+                let angleUnderPointer = (270 - actualRotation) % 360;
+                if (angleUnderPointer < 0) angleUnderPointer += 360;
+                
+                const sliceDeg = 360 / options.length;
+                const index = Math.floor(angleUnderPointer / sliceDeg);
+                
+                const winner = options[index % options.length];
+                const resultBox = document.getElementById('wheel-result');
+                
+                // 添加结果动画
+                resultBox.style.transform = 'scale(0.95)';
+                resultBox.style.opacity = '0.7';
+                setTimeout(() => {
+                    resultBox.innerText = "🎉 结果是： " + winner;
+                    resultBox.style.transform = 'scale(1)';
+                    resultBox.style.opacity = '1';
+                }, 200);
+                
+            }, 4000);
+        }
+
+        // 初始化
+        initWheel();
+    </script>
+</body>
+</html>
